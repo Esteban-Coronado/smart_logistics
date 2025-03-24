@@ -33,6 +33,27 @@ INSERT INTO purchase (product, quantity, purchase_date, status, warehouse_id) VA
 ('Laptop', 10, '2023-10-01 10:00:00', 'PENDING', 1),
 ('Smartphone', 20, '2023-10-02 11:00:00', 'SHIPPED', 2);
 
+-- Crear la tabla de tiendas (Stores)
+CREATE TABLE IF NOT EXISTS store (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    contact_info VARCHAR(255)
+    );
+
+-- Actualizar la tabla de pedidos (Purchases) para incluir la relación con tienda
+ALTER TABLE purchase ADD COLUMN store_id BIGINT;
+ALTER TABLE purchase ADD FOREIGN KEY (store_id) REFERENCES store(id);
+
+-- Insertar datos iniciales para tiendas
+INSERT INTO store (name, address, contact_info) VALUES
+    ('Downtown Store', 'Main Street 123, New York', '212-555-1234'),
+    ('Mall Store', 'Shopping Mall, Los Angeles', '310-555-6789');
+
+-- Actualizar algunas compras existentes para asignarlas a tiendas
+UPDATE purchase SET store_id = 1 WHERE id = 1;
+UPDATE purchase SET store_id = 2 WHERE id = 2;
+
 -- Insertar clientes iniciales para pruebas (contraseñas cifradas con BCrypt)
 -- Contraseña para 'admin': admin123
 -- Contraseña para 'client': client123

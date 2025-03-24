@@ -1,5 +1,6 @@
 package com.maven_smart_logistics.smart_logistics.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,8 +23,14 @@ public class Purchase {
 
     @ManyToOne
     @JoinColumn(name = "warehouse_id")
+    @JsonBackReference(value = "warehouse-purchase")
     private Warehouse warehouse;
-    
+
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    @JsonBackReference(value = "store-purchase")
+    private Store store;
+
     public Long getId() {
         return id;
     }
@@ -62,5 +69,21 @@ public class Purchase {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }
