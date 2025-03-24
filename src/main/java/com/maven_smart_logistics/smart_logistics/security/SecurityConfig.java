@@ -11,23 +11,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    //ToDo determinar a que endpoints puede ingresar cada rol
 
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityFilter securityFilter) throws Exception {
+        return http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/public/**").permitAll()
+                    .requestMatchers("/api/auth").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/client/**").hasRole("CLIENT")
                 .anyRequest().authenticated()
             )
-            .httpBasic(withDefaults());
-        return http.build();
+            .httpBasic(withDefaults())
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
     }
 
     @Bean
@@ -46,6 +51,8 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(admin, client);
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
