@@ -30,7 +30,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+    @Bean 
     public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
             .username("admin")

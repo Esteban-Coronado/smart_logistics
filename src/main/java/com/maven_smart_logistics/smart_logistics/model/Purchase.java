@@ -63,4 +63,12 @@ public class Purchase {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
 }

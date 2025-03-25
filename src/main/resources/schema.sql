@@ -24,6 +24,24 @@ CREATE TABLE IF NOT EXISTS client (
     role VARCHAR(50) NOT NULL
 );
 
+-- Tabla de productos
+CREATE TABLE IF NOT EXISTS product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    warehouse_id BIGINT,
+    FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
+);
+
+-- Tabla de stock
+CREATE TABLE IF NOT EXISTS stock (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    quantity INT NOT NULL,
+    product_id BIGINT UNIQUE,
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
 -- Insertar datos iniciales para pruebas
 INSERT INTO warehouse (name, location) VALUES
 ('Main Warehouse', 'New York'),
